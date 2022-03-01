@@ -1,25 +1,32 @@
-const searchPhone = () => {
+const searchPhone = async () => {
     const searchField = document.getElementById('search-box');
     const searchText = searchField.value;
-    // console.log(searchText);
+
     searchField.value = '';
+
     // fetch url
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
-    // console.log(url);    
-    fetch(url)
-    .then(res => res.json())
-    .then(data => getData(data));
+
+    const res = await fetch(url);
+    const data = await res.json();  // wait for the response
+    getData(data);
+
+    // fetch(url)
+    // .then(res => res.json())
+    // .then(data => getData(data));
 }
 
 
 const getData = name => {
     const phones = name.data.slice(0,20);
     const phoneDiv = document.getElementById('phones');
-    // buddyElement.innerHTML = name[0].name;
+    phoneDiv.textContent = '';
+
     if (phones.length > 0) {
         phones.forEach(phone => {
             const div = document.createElement('div');
             div.classList.add('phone');
+            div.textContent = '';
             div.innerHTML = `
             <figure class="bg-slate-100 rounded-xl p-8 dark:bg-slate-800">
                 <img class="w-24 h-24 md:w-40 md:h-auto md:rounded-none rounded-full mx-auto" src="${phone.image}" alt="" width="384" height="512">
@@ -39,25 +46,31 @@ const getData = name => {
             phoneDiv.appendChild(div);
             // console.log(phone);
         });
+    } else if(phones.length == ''){
+        phoneDiv.innerHTML = `
+        <div class="w-full p-4 text-center">
+            <div class="text-2xl text-sky-500 dark:text-sky-400">
+                Please write a valid name
+            </div>
+        </div>
+        `;
     } else {
         phoneDiv.innerHTML = `
-        <div class="flex flex-wrap -mx-4">
-            <div class="w-full px-4">
-                <div class="text-2xl text-sky-500 dark:text-sky-400">
-                    No results found
-                </div>
+        <div class="w-full p-4 text-center">
+            <div class="text-2xl text-sky-500 dark:text-sky-400">
+                No results found
             </div>
         </div>
         `;
     }
 }
 
-const loadMore = name => {
+const loadMore = async name => {
     const url = `https://openapi.programming-hero.com/api/phone/${name}`;
-    fetch(url)
-    .then(res => res.json())
-    .then(data => phoneDetails(data));
-    // console.log(url); 
+
+    const res = await fetch(url);
+    const data = await res.json();  // wait for the response
+    phoneDetails(data);
 }
 
 const phoneDetails = details => {
@@ -65,45 +78,47 @@ const phoneDetails = details => {
     const sensors = phoneData.mainFeatures.sensors;
     const keys = phoneData.others ? Object.entries(phoneData.others) : [];
     const releaseDate = phoneData.releaseDate ? phoneData.releaseDate : '';
-
-    
     const modelDetails = document.getElementById('phone-details');
+    modelDetails.textContent = '';
+
     modelDetails.innerHTML = `
-    <div class="container mx-auto px-4 lg:px-0">
-        <div class="flex flex-wrap -mx-4">
-            <div class="w-full md:w-1/2 px-4">
+    <div class="mx-auto px-4 py-8 bg-white rounded-lg max-w-4xl mt-12 mb-16 shadow-2xl">
+        <div class="md:flex flex-wrap">
+            <div class="w-full md:w-1/2 px-4 mb-12 md:mb-0">
                 <div class="relative">
                     <img class="w-full" src="${phoneData.image}" alt="">
-                    <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
                 </div>
             </div>
             <div class="w-full md:w-1/2 px-4">
                 <div class="flex flex-wrap -mx-4">
                     <div class="w-full px-4">
-                        <div class="text-2xl text-sky-500 dark:text-sky-400">
+                        <div class="text-3xl font-bold text-black-900 dark:text-sky-400">
                             ${phoneData.name}
                         </div>
-                        <div class="text-lg text-sky-500 dark:text-sky-400">
+                        <div class="text-lg text-amber-900 dark:text-sky-400">
                             ${phoneData.brand}
                         </div>
-                        <div class="text-lg text-sky-500 dark:text-sky-400">
-                            ${phoneData.slug}
-                        </div>
-                        <div class="text-lg text-sky-500 dark:text-sky-400">
-                            ${phoneData.mainFeatures.storage}
-                        </div>
-                        <div class="text-lg text-sky-500 dark:text-sky-400">
-                            ${releaseDate}
-                        </div>
-                        <div class="text-lg text-sky-500 dark:text-sky-400">
-                            <ul>
-                                ${sensors.map(sensor => `<li>${sensor}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div class="text-lg text-sky-500 dark:text-sky-400">
-                            <ul>
-                                ${keys.map((value) => `<li>${value[0]} : ${value[1]}</li>`).join('')}
-                            </ul>
+                        <div class="mt-6">
+                            <p class="mt-2 text-lg text-lime-900 dark:text-sky-400 flex gap-4">
+                                <strong>ID:</strong>
+                                <span>${phoneData.slug}</span>
+                            </p>
+                            <p class="mt-2 text-lg text-lime-900 dark:text-sky-400 flex gap-4">
+                                <strong>Storage:</strong>
+                                <span>${phoneData.mainFeatures.storage}</span>                                
+                            </p>
+                            <p class="mt-2 text-lg text-lime-900 dark:text-sky-400 flex gap-4">
+                                <strong>Release Date:</strong>
+                                <span>${releaseDate}</span>
+                            </p>
+                            <div class="mt-2 text-lg text-lime-900 dark:text-sky-400 flex gap-4">
+                                <strong>Sensor:</strong>
+                                <ul>${sensors.map(sensor => `<li>${sensor}</li>`).join('')}</ul>
+                            </div>
+                            <div class="mt-2 text-lg text-lime-900 dark:text-sky-400 flex gap-4">
+                                <strong>Others:</strong>
+                                <ul>${keys.map((value) => `<li>${value[0]} : ${value[1]}</li>`).join('')}</ul>
+                            </div>
                         </div>
                     </div>
                 </div>
