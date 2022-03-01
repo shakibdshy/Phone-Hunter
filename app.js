@@ -28,7 +28,7 @@ const getData = name => {
                         <div class="text-zinc-900 dark:text-sky-400 text-3xl font-bold">
                             ${phone.phone_name}
                         </div>
-                        <div class="text-zinc-600 dark:text-sky-400 text-base font-medium">
+                        <div class="text-zinc-600 dark:text-sky-400 text-2xl font-bold">
                             ${phone.brand}
                         </div>
                         <button type="button" onclick="loadMore('${phone.slug}')" class="text-white text-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg px-8 py-3 text-center mt-5 mr-2 mb-2">Explore</button>   
@@ -62,10 +62,13 @@ const loadMore = name => {
 
 const phoneDetails = details => {
     const phoneData = details.data;
-    const body = document.body;
-    const div = document.createElement('div');
-    div.classList.add('phone-details');
-    div.innerHTML = `
+    const sensors = phoneData.mainFeatures.sensors;
+    const keys = phoneData.others ? Object.entries(phoneData.others) : [];
+    const releaseDate = phoneData.releaseDate ? phoneData.releaseDate : '';
+
+    
+    const modelDetails = document.getElementById('phone-details');
+    modelDetails.innerHTML = `
     <div class="container mx-auto px-4 lg:px-0">
         <div class="flex flex-wrap -mx-4">
             <div class="w-full md:w-1/2 px-4">
@@ -89,14 +92,27 @@ const phoneDetails = details => {
                         <div class="text-lg text-sky-500 dark:text-sky-400">
                             ${phoneData.mainFeatures.storage}
                         </div>
+                        <div class="text-lg text-sky-500 dark:text-sky-400">
+                            ${releaseDate}
+                        </div>
+                        <div class="text-lg text-sky-500 dark:text-sky-400">
+                            <ul>
+                                ${sensors.map(sensor => `<li>${sensor}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="text-lg text-sky-500 dark:text-sky-400">
+                            <ul>
+                                ${keys.map((value) => `<li>${value[0]} : ${value[1]}</li>`).join('')}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     `;
-    body.appendChild(div);
+    // body.appendChild(div);
 
-    console.log(phoneData.image);
+    console.log(releaseDate);
 }
 
