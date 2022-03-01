@@ -21,17 +21,17 @@ const getData = name => {
             const div = document.createElement('div');
             div.classList.add('phone');
             div.innerHTML = `
-            <figure class="bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-                <img class="w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto" src="${phone.image}" alt="" width="384" height="512">
-                <div class="pt-6 md:p-8 text-center md:text-left space-y-4">
-                    <figcaption class="font-medium">
-                        <div class="text-sky-500 dark:text-sky-400">
-                            ${phone.brand}
-                        </div>
-                        <div class="text-sky-500 dark:text-sky-400">
+            <figure class="bg-slate-100 rounded-xl p-8 dark:bg-slate-800">
+                <img class="w-24 h-24 md:w-40 md:h-auto md:rounded-none rounded-full mx-auto" src="${phone.image}" alt="" width="384" height="512">
+                <div class="pt-6 md:p-8 md:pb-0 text-center md:text-left space-y-4">
+                    <figcaption class="font-medium text-center">
+                        <div class="text-zinc-900 dark:text-sky-400 text-3xl font-bold">
                             ${phone.phone_name}
                         </div>
-                        <button type="button" class="btn-trigger py-3 px-5 bg-slate-200 text-green-800 text-lg font-bold" onclick="loadMore('${phone.slug}')">Explore</button>
+                        <div class="text-zinc-600 dark:text-sky-400 text-base font-medium">
+                            ${phone.brand}
+                        </div>
+                        <button type="button" onclick="loadMore('${phone.slug}')" class="text-white text-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg px-8 py-3 text-center mt-5 mr-2 mb-2">Explore</button>   
                     </figcaption>
                 </div>
             </figure>
