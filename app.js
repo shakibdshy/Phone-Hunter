@@ -11,9 +11,6 @@ const searchPhone = async () => {
     const data = await res.json();  // wait for the response
     getData(data);
 
-    // fetch(url)
-    // .then(res => res.json())
-    // .then(data => getData(data));
 }
 
 
@@ -79,7 +76,6 @@ const phoneDetails = details => {
     const keys = phoneData.others ? Object.entries(phoneData.others) : [];
     const releaseDate = phoneData.releaseDate ? phoneData.releaseDate : '';
     const modelDetails = document.getElementById('phone-details');
-    modelDetails.textContent = '';
 
     modelDetails.innerHTML = `
     <div class="mx-auto px-4 py-8 bg-white rounded-lg max-w-4xl mt-12 mb-16 shadow-2xl">
@@ -128,6 +124,6 @@ const phoneDetails = details => {
     `;
     // body.appendChild(div);
 
-    console.log(releaseDate);
+    // console.log(releaseDate);
 }
 
