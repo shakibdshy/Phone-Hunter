@@ -74,7 +74,7 @@ const phoneDetails = details => {
     const phoneData = details.data;
     const sensors = phoneData.mainFeatures.sensors;
     const keys = phoneData.others ? Object.entries(phoneData.others) : [];
-    const releaseDate = phoneData.releaseDate ? phoneData.releaseDate : '';
+    const releaseDate = phoneData.releaseDate ? phoneData.releaseDate : 'No Release Date Found';
     const modelDetails = document.getElementById('phone-details');
 
     modelDetails.innerHTML = `
